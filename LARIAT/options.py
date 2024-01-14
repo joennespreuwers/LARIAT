@@ -17,7 +17,5 @@ m2_steps_per_rev = 400
 
 # Dimensions (milimeter)
 wheel_dia = 80
-# motor_height = 1400  # measured axle to ground
-# motor_spacing = 1570  # measured axle to axle
-motor_height = 800  # measured axle to ground
-motor_spacing = 800  # measured axle to axle
+motor_height = 1400  # measured axle to ground
+motor_spacing = 1570  # measured axle to axle
