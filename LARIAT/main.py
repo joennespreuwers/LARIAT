@@ -11,7 +11,7 @@ import time
 import math
 import options
 
-# from multiprocessing import Process
+from threading import Thread
 
 
 ##### Setup #####
@@ -43,14 +43,34 @@ def goto(x: float, y: float, speed: float = 0.00125):
     L1_cur = L1
     L2_cur = L2
 
+    # ΔL1, ΔL2 to steps
+    L1_steps = 5
+    L2_steps = 6
 
-def home():
-    input("Start homing, press enter...")
+    if __name__ == "__main__":
+        L1_process = Thread(
+            target=m1.motor_go(
+                False,
+                "Half",
+                round(((360 * dL1) / 2 * math.pi) / options.deg_steps),
+                speed,
+                False,
+                0.05,
+            )
+        )
+        L2_process = Thread(
+            target=m2.motor_go(
+                True,
+                "Half",
+                round(((360 * dL2) / 2 * math.pi) / options.deg_steps),
+                speed,
+                False,
+                0.05,
+            )
+        )
 
-    GPIO.output(options.m1_en_pin, GPIO.HIGH)
-    input("Move left motor to homing mark, press enter to continue...")
-    GPIO.output(options.m1_en_pin, GPIO.LOW)
+        L1_process.start()
+        L2_process.start()
 
-    GPIO.output(options.m2_en_pin, GPIO.HIGH)
-    input("Move left motor to homing mark, press enter to continue...")
-    GPIO.output(options.m2_en_pin, GPIO.LOW)
+        L1_process.join()
+        L2_process.join()
